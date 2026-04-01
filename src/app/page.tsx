@@ -1,119 +1,116 @@
-import React from 'react';
+"use client";
 
-const Wireframe = () => {
-  // Dummy data for the "Matrix"
+import React, { useState } from 'react';
+
+const WireframeV2 = () => {
+  const [topic, setTopic] = useState('Builds');
+  const [source, setSource] = useState('YouTube');
+  const [showMobileMenu, setShowMobileMenu] = useState(null); // 'topic' or 'source'
+
   const topics = ['Builds', 'News', 'Embers', 'Guides'];
   const sources = ['YouTube', 'Reddit', 'Wowhead', 'Blizzard'];
-  const cards = Array.from({ length: 12 }); // 12 placeholder cards
+  const cards = Array.from({ length: 8 });
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-800 font-sans">
+    <div className="min-h-screen bg-gray-100 text-gray-800 font-sans pb-20 md:pb-0">
       
-      {/* HEADER SECTION */}
-      {/* UPDATED HEADER */}
-<header className="fixed top-0 w-full h-16 bg-white border-b border-gray-300 z-50">
-  <div className="max-w-[1400px] mx-auto h-full flex items-center justify-between px-4 relative">
-    
-    {/* Logo: Positioned to hang off the left of the content area */}
-    <div className="bg-gray-800 text-white px-6 py-2 font-bold rounded-md shadow-md">
-      MyHearth.gg
-    </div>
-
-    {/* Center Breadcrumb */}
-    <div className="hidden md:flex items-center space-x-2 text-sm font-medium">
-      <span className="text-blue-600 font-bold uppercase tracking-tighter">Builds</span>
-      <span className="text-gray-300">--</span>
-      <span className="text-orange-600 font-bold uppercase tracking-tighter">YouTube</span>
-    </div>
-
-    {/* Login: Positioned to hang off the right */}
-    <div className="bg-blue-700 text-white px-6 py-2 font-bold rounded-md shadow-md cursor-pointer hover:bg-blue-800 transition-all">
-      Bnet Login
-    </div>
-  </div>
-</header>
-
-      {/* LEFT PILLAR (TOPICS) - Desktop Only */}
-      <aside className="hidden md:flex fixed top-16 bottom-0 w-20 bg-gray-200 border-r border-gray-300 flex-col items-center py-8 space-y-8 z-40 
-  left-[50%] -ml-[640px] lg:-ml-[700px]">
-        {topics.map((t) => (
-          <div key={t} className="group relative">
-            <div className="w-12 h-12 bg-white rounded-full border-2 border-gray-400 flex items-center justify-center cursor-pointer hover:border-blue-500 hover:scale-110 transition-all shadow-sm">
-              <span className="text-xs font-bold">{t[0]}</span>
-            </div>
-            {/* Tooltip */}
-            <span className="absolute left-16 top-3 scale-0 group-hover:scale-100 transition-all bg-black text-white text-xs p-2 rounded whitespace-nowrap">
-              {t}
-            </span>
-          </div>
-        ))}
-      </aside>
-
-      {/* RIGHT PILLAR (SOURCES) - Desktop Only */}
-      <aside className="hidden md:flex fixed top-16 bottom-0 w-20 bg-gray-200 border-l border-gray-300 flex-col items-center py-8 space-y-8 z-40 
-  right-[50%] -mr-[640px] lg:-mr-[700px]">
-        {sources.map((s) => (
-          <div key={s} className="group relative">
-            <div className="w-12 h-12 bg-white rounded-full border-2 border-gray-400 flex items-center justify-center cursor-pointer hover:border-orange-500 hover:scale-110 transition-all shadow-sm">
-              <span className="text-xs font-bold">{s[0]}</span>
-            </div>
-            {/* Tooltip */}
-            <span className="absolute right-16 top-3 scale-0 group-hover:scale-100 transition-all bg-black text-white text-xs p-2 rounded whitespace-nowrap">
-              {s}
-            </span>
-          </div>
-        ))}
-      </aside>
-
-      {/* MAIN CONTENT AREA */}
-      <main className="pt-24 pb-32 md:pb-8 md:px-24 min-h-screen">
-        <div className="max-w-6xl mx-auto px-4">
+      {/* HEADER: Full Width with Centered Elements */}
+      <header className="fixed top-0 w-full h-16 bg-white border-b border-gray-300 z-50">
+        <div className="max-w-[1400px] mx-auto h-full flex items-center justify-between px-4">
+          <div className="w-40 bg-gray-800 text-white px-4 py-2 font-bold rounded-md shadow-sm">MyHearth.gg</div>
           
-          {/* MASONRY-STYLE GRID */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {cards.map((_, i) => (
-              <div key={i} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-                {/* Dummy Card Media */}
-                <div className="aspect-video bg-gray-300 flex items-center justify-center">
-                  <span className="text-gray-500 italic">Card Media Placeholder</span>
-                </div>
-                {/* Card Content */}
-                <div className="p-4 space-y-2">
-                  <div className="flex justify-between text-[10px] uppercase tracking-widest font-bold">
-                    <span className="text-blue-600">Build</span>
-                    <span className="text-orange-600">YouTube</span>
-                  </div>
-                  <h3 className="font-bold text-gray-800 leading-tight">Amazing Grizzly Hills Cabin Concept</h3>
-                  <p className="text-xs text-gray-500">By ArtieTheBuilder • 2 days ago</p>
-                </div>
-              </div>
-            ))}
+          <div className="hidden md:flex items-center space-x-3 text-sm tracking-widest font-black uppercase">
+            <span className="text-blue-600">{topic}</span>
+            <span className="text-gray-300">—</span>
+            <span className="text-orange-600">{source}</span>
           </div>
+
+          <div className="w-40 bg-blue-700 text-white px-4 py-2 font-bold rounded-md shadow-sm text-center">Bnet Login</div>
         </div>
+      </header>
+
+      {/* DESKTOP PILLARS (Unchanged Math) */}
+      <aside className="hidden md:flex fixed top-16 bottom-0 w-20 bg-gray-200 border-r border-gray-300 flex-col items-center py-8 space-y-8 z-40 left-[50%] -ml-[700px]">
+        {topics.map(t => (
+          <button key={t} onClick={() => setTopic(t)} className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${topic === t ? 'border-blue-600 bg-blue-50 scale-110' : 'border-gray-400 bg-white'}`}>
+            {t[0]}
+          </button>
+        ))}
+      </aside>
+
+      <aside className="hidden md:flex fixed top-16 bottom-0 w-20 bg-gray-200 border-l border-gray-300 flex-col items-center py-8 space-y-8 z-40 right-[50%] -mr-[700px]">
+        {sources.map(s => (
+          <button key={s} onClick={() => setSource(s)} className={`w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${source === s ? 'border-orange-600 bg-orange-50 scale-110' : 'border-gray-400 bg-white'}`}>
+            {s[0]}
+          </button>
+        ))}
+      </aside>
+
+      {/* MAIN CONTENT + CONTAINED FOOTER */}
+      <main className="pt-24 px-4 md:px-0 max-w-[1200px] mx-auto min-h-screen flex flex-col">
+        <div className="flex-grow grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {cards.map((_, i) => (
+            <div key={i} className="bg-white aspect-video rounded-xl border border-gray-200 shadow-sm flex items-center justify-center text-gray-400 italic">
+              Card Content {i + 1}
+            </div>
+          ))}
+        </div>
+
+        {/* FOOTER: Anchored to the bottom of the content flow */}
+        <footer className="mt-12 py-12 border-t border-gray-300 text-center text-gray-500 text-sm space-y-2">
+          <p>© 2026 MyHearth.gg - For the Builders.</p>
+          <p>World of Warcraft and Blizzard Entertainment are trademarks of Blizzard Entertainment, Inc.</p>
+          <div className="flex justify-center space-x-6 pt-4">
+            <span>About</span> <span>Discord</span> <span>Privacy</span>
+          </div>
+        </footer>
       </main>
 
-      {/* MOBILE DOUBLE-DECKER NAV (Visible < 768px) */}
-      <nav className="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-300 z-50 flex flex-col shadow-2xl">
-        {/* Top Row: Topics */}
-        <div className="flex overflow-x-auto p-3 space-x-4 border-b border-gray-100 no-scrollbar">
-          {topics.map(t => (
-            <button key={t} className="px-4 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-bold whitespace-nowrap border border-blue-200">
-              {t}
-            </button>
-          ))}
+      {/* MOBILE UI: Dual Floating Action Buttons */}
+      <div className="md:hidden fixed bottom-6 left-0 right-0 px-6 flex justify-between pointer-events-none z-50">
+        <button 
+          onClick={() => setShowMobileMenu('topic')}
+          className="pointer-events-auto w-16 h-16 bg-blue-600 text-white rounded-full shadow-2xl flex flex-col items-center justify-center text-[10px] font-bold uppercase"
+        >
+          <span>Topic</span>
+        </button>
+        
+        <button 
+          onClick={() => setShowMobileMenu('source')}
+          className="pointer-events-auto w-16 h-16 bg-orange-600 text-white rounded-full shadow-2xl flex flex-col items-center justify-center text-[10px] font-bold uppercase"
+        >
+          <span>Source</span>
+        </button>
+      </div>
+
+      {/* MOBILE MENU OVERLAY (Bottom Sheet style) */}
+      {showMobileMenu && (
+        <div className="fixed inset-0 bg-black/50 z-[60] flex items-end" onClick={() => setShowMobileMenu(null)}>
+          <div className="w-full bg-white rounded-t-3xl p-6 space-y-4 animate-slide-up" onClick={e => e.stopPropagation()}>
+            <h3 className="text-center font-bold uppercase text-gray-400 tracking-widest text-xs">
+              Select {showMobileMenu === 'topic' ? 'Category' : 'Platform'}
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              {(showMobileMenu === 'topic' ? topics : sources).map(item => (
+                <button 
+                  key={item}
+                  onClick={() => {
+                    showMobileMenu === 'topic' ? setTopic(item) : setSource(item);
+                    setShowMobileMenu(null);
+                  }}
+                  className="py-4 bg-gray-100 rounded-xl font-bold hover:bg-gray-200"
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+            <button onClick={() => setShowMobileMenu(null)} className="w-full py-3 text-gray-500 font-medium">Close</button>
+          </div>
         </div>
-        {/* Bottom Row: Sources */}
-        <div className="flex overflow-x-auto p-3 space-x-4 no-scrollbar">
-          {sources.map(s => (
-            <button key={s} className="px-4 py-1 bg-orange-50 text-orange-700 rounded-full text-sm font-bold whitespace-nowrap border border-orange-200">
-              {s}
-            </button>
-          ))}
-        </div>
-      </nav>
+      )}
 
     </div>
   );
 };
 
-export default Wireframe;
+export default WireframeV2;
