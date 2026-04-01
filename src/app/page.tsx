@@ -9,7 +9,7 @@ const WireframeV2 = () => {
 
   const topics = ['Builds', 'News', 'Embers', 'Guides'];
   const sources = ['YouTube', 'Reddit', 'Wowhead', 'Blizzard'];
-  const cards = Array.from({ length: 8 });
+  const cards = Array.from({ length: 16 });
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-800 font-sans pb-20 md:pb-0">
