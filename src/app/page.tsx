@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 const MyHearthWireframe = () => {
   // Topic defaults to 'Builds', Source defaults to null (All)
-  const [topic, setTopic] = useState<string | null>('Builds');
+  const [topic, setTopic] = useState<string | null>(null);
   const [source, setSource] = useState<string | null>(null);
   const [showMobileMenu, setShowMobileMenu] = useState<string | null>(null);
 
