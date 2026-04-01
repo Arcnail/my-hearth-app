@@ -10,27 +10,32 @@ const Wireframe = () => {
     <div className="min-h-screen bg-gray-100 text-gray-800 font-sans">
       
       {/* HEADER SECTION */}
-      <header className="fixed top-0 w-full h-16 bg-white border-b border-gray-300 z-50 flex items-center px-4 justify-between">
-        {/* Left: Offset Logo */}
-        <div className="w-40 h-10 bg-gray-800 text-white flex items-center justify-center font-bold rounded-r-lg -ml-4 shadow-md">
-          MyHearth.gg
-        </div>
+      {/* UPDATED HEADER */}
+<header className="fixed top-0 w-full h-16 bg-white border-b border-gray-300 z-50">
+  <div className="max-w-[1400px] mx-auto h-full flex items-center justify-between px-4 relative">
+    
+    {/* Logo: Positioned to hang off the left of the content area */}
+    <div className="bg-gray-800 text-white px-6 py-2 font-bold rounded-md shadow-md">
+      MyHearth.gg
+    </div>
 
-        {/* Center: Dynamic Breadcrumb (Topic -- Source) */}
-        <div className="hidden md:flex items-center space-x-4 text-lg font-medium text-gray-500">
-          <span className="text-blue-600">Builds</span>
-          <span className="text-gray-300">—</span>
-          <span className="text-orange-600">YouTube</span>
-        </div>
+    {/* Center Breadcrumb */}
+    <div className="hidden md:flex items-center space-x-2 text-sm font-medium">
+      <span className="text-blue-600 font-bold uppercase tracking-tighter">Builds</span>
+      <span className="text-gray-300">--</span>
+      <span className="text-orange-600 font-bold uppercase tracking-tighter">YouTube</span>
+    </div>
 
-        {/* Right: Offset Login */}
-        <div className="w-40 h-10 bg-blue-700 text-white flex items-center justify-center font-bold rounded-l-lg -mr-4 shadow-md cursor-pointer hover:bg-blue-800 transition-colors">
-          Bnet Login
-        </div>
-      </header>
+    {/* Login: Positioned to hang off the right */}
+    <div className="bg-blue-700 text-white px-6 py-2 font-bold rounded-md shadow-md cursor-pointer hover:bg-blue-800 transition-all">
+      Bnet Login
+    </div>
+  </div>
+</header>
 
       {/* LEFT PILLAR (TOPICS) - Desktop Only */}
-      <aside className="hidden md:flex fixed left-0 top-16 bottom-0 w-20 bg-gray-200 border-r border-gray-300 flex-col items-center py-8 space-y-8 z-40">
+      <aside className="hidden md:flex fixed top-16 bottom-0 w-20 bg-gray-200 border-r border-gray-300 flex-col items-center py-8 space-y-8 z-40 
+  left-[50%] -ml-[640px] lg:-ml-[700px]">
         {topics.map((t) => (
           <div key={t} className="group relative">
             <div className="w-12 h-12 bg-white rounded-full border-2 border-gray-400 flex items-center justify-center cursor-pointer hover:border-blue-500 hover:scale-110 transition-all shadow-sm">
@@ -45,7 +50,8 @@ const Wireframe = () => {
       </aside>
 
       {/* RIGHT PILLAR (SOURCES) - Desktop Only */}
-      <aside className="hidden md:flex fixed right-0 top-16 bottom-0 w-20 bg-gray-200 border-l border-gray-300 flex-col items-center py-8 space-y-8 z-40">
+      <aside className="hidden md:flex fixed top-16 bottom-0 w-20 bg-gray-200 border-l border-gray-300 flex-col items-center py-8 space-y-8 z-40 
+  right-[50%] -mr-[640px] lg:-mr-[700px]">
         {sources.map((s) => (
           <div key={s} className="group relative">
             <div className="w-12 h-12 bg-white rounded-full border-2 border-gray-400 flex items-center justify-center cursor-pointer hover:border-orange-500 hover:scale-110 transition-all shadow-sm">
