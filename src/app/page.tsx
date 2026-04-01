@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 const WireframeV2 = () => {
   const [topic, setTopic] = useState('Builds');
   const [source, setSource] = useState('YouTube');
-  const [showMobileMenu, setShowMobileMenu] = useState(null); // 'topic' or 'source'
+  const [showMobileMenu, setShowMobileMenu] = useState<string | null>(null); // 'topic' or 'source'
 
   const topics = ['Builds', 'News', 'Embers', 'Guides'];
   const sources = ['YouTube', 'Reddit', 'Wowhead', 'Blizzard'];
