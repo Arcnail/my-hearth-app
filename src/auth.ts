@@ -19,18 +19,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       userinfo: "https://us.battle.net/oauth/userinfo",
       checks: ["state"],
       profile(profile) {
-        console.log("Blizzard Profile Received:", profile);
+        // Log exactly what we are about to try and send to the DB
+        const userId = String(profile.sub || profile.id);
+        console.log("Attempting to sync User ID:", userId);
+        
         return {
-          // We force this to a string to match the TEXT ID in Supabase
-          id: String(profile.sub || profile.id),
+          id: userId,
           name: profile.battletag,
-          email: profile.email || null, // Ensure email isn't 'undefined'
+          email: null, // Hardcode to null to bypass any 'unique' or 'undefined' errors
+          image: null,
         }
       },
     },
   ],
-  // This is the secret sauce for NextAuth v5 + Database
-  session: { strategy: "database" }, 
+  // Switch back to JWT temporarily just to get the user created
+  session: { strategy: "jwt" }, 
   trustHost: true,
   secret: process.env.AUTH_SECRET,
   debug: true,
