@@ -1,12 +1,14 @@
 import NextAuth from "next-auth"
 import BattleNet from "next-auth/providers/battlenet"
-import { SupabaseAdapter } from "@auth/supabase-adapter"
+import { createClient } from "@supabase/supabase-js"
+
+// 1. Initialize the official Supabase client manually
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: SupabaseAdapter({
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY!,
-  }),
   providers: [
     {
       id: "battlenet",
@@ -18,21 +20,34 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       token: "https://us.battle.net/oauth/token",
       userinfo: "https://us.battle.net/oauth/userinfo",
       checks: ["state"],
-      profile(profile) {
-        // Log exactly what we are about to try and send to the DB
+      async profile(profile) {
         const userId = String(profile.sub || profile.id);
-        console.log("Attempting to sync User ID:", userId);
-        
+        console.log("Checking for Hero in DB:", userId);
+
+        // 2. MANUAL UPSERT: We tell Supabase exactly what to do
+        const { error } = await supabase
+          .from('users')
+          .upsert({ 
+            id: userId, 
+            name: profile.battletag, 
+            email: profile.email || null 
+          }, { onConflict: 'id' });
+
+        if (error) {
+          console.error("❌ Supabase Sync Error:", error.message);
+        } else {
+          console.log("✅ Hero Synced Successfully:", profile.battletag);
+        }
+
         return {
           id: userId,
           name: profile.battletag,
-          email: null, // Hardcode to null to bypass any 'unique' or 'undefined' errors
-          image: null,
+          email: profile.email,
         }
       },
     },
   ],
-  // Switch back to JWT temporarily just to get the user created
+  // 3. Keep sessions as JWT for now to avoid 'sessions' table errors
   session: { strategy: "jwt" }, 
   trustHost: true,
   secret: process.env.AUTH_SECRET,
