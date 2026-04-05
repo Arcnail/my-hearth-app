@@ -24,7 +24,7 @@ const MyHearthWireframe = () => {
     if (topic && source) return <>{topic} <span className="mx-2 text-gray-300">—</span> {source}</>;
     if (topic) return `All ${topic}`;
     if (source) return `${source} Content`;
-    return "Exploring the Hearth";
+    return "Exploring the Hearth in DEV v2";
   };
 
   return (
@@ -154,8 +154,70 @@ const MyHearthWireframe = () => {
         </button>
       </div>
 
-      {/* MOBILE MENU omitted for brevity - no changes needed there */}
+    {/* MOBILE MENU MODAL */}
+<div 
+  className={`fixed inset-0 z-[100] flex flex-col justify-end transition-all duration-300 ease-out ${
+    showMobileMenu ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+  }`}
+>
+  {/* Backdrop */}
+  <div 
+    className="absolute inset-0 bg-black/80 backdrop-blur-md"
+    onClick={() => setShowMobileMenu(null)} 
+  />
+
+  {/* Menu Content */}
+  <div 
+    className={`relative bg-[#1a1a1a] rounded-t-3xl p-6 transform transition-transform duration-300 ease-out border-t border-white/10 max-h-[80vh] overflow-y-auto ${
+      showMobileMenu ? 'translate-y-0' : 'translate-y-full'
+    }`}
+  >
+    <div className="w-12 h-1.5 bg-white/20 rounded-full mx-auto mb-6" />
+    
+    <h3 className="text-xl font-bold text-white mb-6 px-2">
+      Filter by {showMobileMenu === 'topic' ? 'Topic' : 'Source'}
+    </h3>
+
+    <div className="grid grid-cols-1 gap-3">
+      {/* 1. Add an "All" option to reset filters */}
+      <button
+        onClick={() => {
+          showMobileMenu === 'topic' ? setTopic('') : setSource('');
+          setShowMobileMenu(null);
+        }}
+        className="w-full py-4 px-6 bg-white/5 text-white rounded-xl font-bold text-left hover:bg-white/10 transition-colors border border-white/5"
+      >
+        Show All {showMobileMenu === 'topic' ? 'Topics' : 'Sources'}
+      </button>
+
+      {/* 2. Map through your existing arrays */}
+      {(showMobileMenu === 'topic' ? topics : sources).map((item) => (
+        <button
+          key={item}
+          onClick={() => {
+            showMobileMenu === 'topic' ? setTopic(item) : setSource(item);
+            setShowMobileMenu(null);
+          }}
+          className={`w-full py-4 px-6 rounded-xl font-bold text-left transition-colors border ${
+            (topic === item || source === item) 
+              ? 'bg-blue-600 border-blue-400 text-white' 
+              : 'bg-white/5 border-white/5 text-gray-300'
+          }`}
+        >
+          {item}
+        </button>
+      ))}
     </div>
+
+    <button 
+      onClick={() => setShowMobileMenu(null)}
+      className="mt-8 w-full py-4 text-gray-400 font-bold tracking-widest text-sm"
+    >
+      CANCEL
+    </button>
+  </div>
+</div>
+    </div> 
   );
 };
 
