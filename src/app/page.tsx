@@ -155,6 +155,39 @@ const MyHearthWireframe = () => {
       </div>
 
       {/* MOBILE MENU omitted for brevity - no changes needed there */}
+        {showMobileMenu && (
+        <div className="fixed inset-0 bg-black/60 z-[70] flex items-end" onClick={() => setShowMobileMenu(null)}>
+           <div className="w-full bg-white rounded-t-3xl p-6 space-y-4" onClick={e => e.stopPropagation()}>
+            <h3 className="text-center font-black uppercase text-gray-500 tracking-widest text-sm">Select Filter</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {/* Add "ALL" option at the top of the mobile list */}
+              <button 
+                onClick={() => {
+                  showMobileMenu === 'topic' ? setTopic(null) : setSource(null);
+                  setShowMobileMenu(null);
+                }}
+                className={`py-4 rounded-xl font-black italic border-2 ${(showMobileMenu === 'topic' ? topic === null : source === null) ? 'bg-gray-800 text-white' : 'bg-gray-100'}`}
+              >
+                ALL
+              </button>
+              {(showMobileMenu === 'topic' ? topics : sources).map(item => {
+                const isActive = showMobileMenu === 'topic' ? topic === item : source === item;
+                return (
+                    <button key={item} onClick={() => {
+                      showMobileMenu === 'topic' ? toggleTopic(item) : toggleSource(item);
+                      setShowMobileMenu(null);
+                    }}
+                    className={`py-4 rounded-xl font-bold ${isActive ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700'}`}
+                  >
+                    {item}
+                  </button>
+                );
+              })}
+            </div>
+              <button onClick={() => setShowMobileMenu(null)} className="w-full py-4 text-gray-400 font-bold uppercase text-xs">Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
