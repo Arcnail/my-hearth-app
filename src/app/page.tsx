@@ -24,7 +24,7 @@ const MyHearthWireframe = () => {
     if (topic && source) return <>{topic} <span className="mx-2 text-gray-300">—</span> {source}</>;
     if (topic) return `All ${topic}`;
     if (source) return `${source} Content`;
-    return "Exploring the Hearth in DEV";
+    return "Exploring the Hearth in DEV v2";
   };
 
   return (
