@@ -128,7 +128,7 @@ const MyHearthWireframe = () => {
 
       {/* MAIN CONTENT */}
       <main className="pt-24 px-4 md:px-0 max-w-[1200px] mx-auto min-h-screen flex flex-col">
-        <div className="flex-grow grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="flex-grow grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {cards.map((_, i) => (
             <div key={i} className="bg-white aspect-video rounded-xl border border-gray-200 shadow-sm flex flex-col items-center justify-center p-4">
               <div className="text-[10px] font-bold uppercase tracking-tighter text-gray-400">
@@ -139,8 +139,10 @@ const MyHearthWireframe = () => {
         </div>
 
         <footer className="mt-12 py-12 border-t border-gray-300 text-center text-gray-400 text-xs space-y-2">
-          <p>© 2026 MyHearth.gg - For the Builders.</p>
+          <p>© 2026 MyHearth • The Portal to WoW Housing</p>
+          <p>MyHearth is an independent World of Warcraft fan project.</p>
           <p>World of Warcraft and Blizzard Entertainment are trademarks of Blizzard Entertainment, Inc.</p>
+          <p>This site is not affiliated with Blizzard.</p>
         </footer>
       </main>
 
