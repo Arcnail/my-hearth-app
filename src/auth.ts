@@ -2,8 +2,6 @@ import NextAuth from "next-auth"
 import BattleNet from "next-auth/providers/battlenet"
 import { createClient } from "@supabase/supabase-js"
 
-// 1. Initialize the official Supabase client with the Service Role (Admin) key
-// This allows the auth flow to bypass RLS and keep your database secure from the public.
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -22,41 +20,52 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       userinfo: "https://us.battle.net/oauth/userinfo",
       checks: ["state"],
       async profile(profile) {
-        // Define the userId from Blizzard's response
-        const userId = String(profile.sub || profile.id);
+        // 1. Log the full profile to the terminal so we can find the "chill" ID
+        console.log("--- BATTLE.NET PROFILE START ---");
+        console.log(JSON.stringify(profile, null, 2));
         
-        console.log("Processing login for Hero:", profile.battletag);
+        // 2. Identify the ID. Most providers use 'id' or 'sub'
+        // If Battle.net is sending a UUID in 'sub', we might need 'profile.id' instead
+        const userId = String(profile.id || profile.sub);
+        
+        console.log("EXTRACTED USER ID:", userId);
+        console.log("--- BATTLE.NET PROFILE END ---");
 
-        // 2. MANUAL UPSERT: Consolidating everything into the 'users' table
-        const { error } = await supabase
-          .from('users')
-          .upsert({ 
-            id: userId, 
-            name: profile.battletag, 
-            email: profile.email || null,
-            icon: profile.image || null, // Matches the 'icon' column you added
-            last_login: new Date().toISOString()
-          }, { onConflict: 'id' });
+        // 3. Manual Sync to our custom 'users' table
+        await supabase.from('users').upsert({ 
+          id: userId, 
+          name: profile.battletag, 
+          icon: profile.image || null,
+          last_login: new Date().toISOString()
+        }, { onConflict: 'id' });
 
-        if (error) {
-          console.error("❌ Supabase Sync Error:", error.message);
-        } else {
-          console.log("✅ Hero Synced Successfully to 'users' table.");
-        }
-
-        // This return object is what NextAuth uses to create the session cookie
         return {
           id: userId,
           name: profile.battletag,
-          email: profile.email,
           image: profile.image,
         }
       },
     },
   ],
-  // Use JWT strategy so we don't need a 'sessions' table in the database
+  callbacks: {
+    async jwt({ token, user, profile }) {
+      // 1. On initial login, 'user' and 'profile' are available
+      if (user && profile) {
+        // Force the token to use the chill ID from the profile
+        const chillId = String(profile.id || profile.sub);
+        console.log("JWT CALLBACK - FORCING CHILL ID:", chillId);
+        token.sub = chillId;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token.sub && session.user) {
+        session.user.id = token.sub;
+      }
+      return session;
+    },
+  },
   session: { strategy: "jwt" }, 
   trustHost: true,
   secret: process.env.AUTH_SECRET,
-  debug: true,
 })
